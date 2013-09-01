@@ -35,50 +35,51 @@ shared_examples_for "it is taggable" do
       Diaspora::Taggable.format_tags(@str, :plain_text => true).should == @str
     end
 
-    it "doesn't mangle text when tags are involved" do
-      expected = {
-        nil => '',
-        '' => '',
-        'abc' => 'abc',
-        'a #b c' => "a #{tag_link('b')} c",
-        '#'                      => '#',
-        '##'                     => '##',
-        '###'                    => '###',
-        '#a'                     => tag_link('a'),
-        '#foobar'                => tag_link('foobar'),
-        '#foocar<br>'            => "#{tag_link('foocar')}&lt;br&gt;",
-        '#fooo@oo'               => "#{tag_link('fooo')}@oo",
-        '#num3ric hash tags'     => "#{tag_link('num3ric')} hash tags",
-        '#12345 tag'             => "#{tag_link('12345')} tag",
-        '#12cde tag'             => "#{tag_link('12cde')} tag",
-        '#abc45 tag'             => "#{tag_link('abc45')} tag",
-        '#<3'                    => %{<a href="/tags/<3" class="tag">#&lt;3</a>},
-        'i #<3'                  => %{i <a href="/tags/<3" class="tag">#&lt;3</a>},
-        'i #<3 you'              => %{i <a href="/tags/<3" class="tag">#&lt;3</a> you},
-        '#<4'                    => '#&lt;4',
-        'test#foo test'          => 'test#foo test',
-        'test.#joo bar'          => 'test.#joo bar',
-        'test #foodar test'      => "test #{tag_link('foodar')} test",
-        'test #foofar<br> test'  => "test #{tag_link('foofar')}&lt;br&gt; test",
-        'test #gooo@oo test'     => "test #{tag_link('gooo')}@oo test",
-        'test #foo-test test'    => "test #{tag_link('foo-test')} test",
-        'test #hoo'              => "test #{tag_link('hoo')}",
-        'test #two_word tags'    => "test #{tag_link('two_word')} tags",
-        'test #three_word_tags'  => "test #{tag_link('three_word_tags')}",
-        '#terminal_underscore_'  => tag_link('terminal_underscore_'),
-        '#terminalunderscore_'   => tag_link('terminalunderscore_'),
-        '#_initialunderscore'    => tag_link('_initialunderscore'),
-        '#_initial_underscore'   => tag_link('_initial_underscore'),
-        '#terminalhyphen-'       => tag_link('terminalhyphen-'),
-        '#terminal-hyphen-'      => tag_link('terminal-hyphen-'),
-        '#terminalhyphen- tag'   => "#{tag_link('terminalhyphen-')} tag",
-        '#-initialhyphen'        => tag_link('-initialhyphen'),
-        '#-initialhyphen tag'    => "#{tag_link('-initialhyphen')} tag",
-        '#-initial-hyphen'       => tag_link('-initial-hyphen'),
-      }
+      it "doesn't mangle text when tags are involved" do
+        expected = {
+          nil => '',
+          '' => '',
+          'abc' => 'abc',
+          'a #b c' => "a #{tag_link('b')} c",
+          '#'                      => '#',
+          '##'                     => '##',
+          '###'                    => '###',
+          '#a'                     => tag_link('a'),
+          '#foobar'                => tag_link('foobar'),
+          '#foocar<br>'            => "#{tag_link('foocar')}&lt;br&gt;",
+          '#fooo@oo'               => "#{tag_link('fooo')}@oo",
+          '#num3ric hash tags'     => "#{tag_link('num3ric')} hash tags",
+          '#12345 tag'             => "#{tag_link('12345')} tag",
+          '#12cde tag'             => "#{tag_link('12cde')} tag",
+          '#abc45 tag'             => "#{tag_link('abc45')} tag",
+          '#<3'                    => %{<a class="tag" href="/tags/<3">#&lt;3</a>},
+          'i #<3'                  => %{i <a class="tag" href="/tags/<3">#&lt;3</a>},
+          'i #<3 you'              => %{i <a class="tag" href="/tags/<3">#&lt;3</a> you},
+          '#<4'                    => '#&lt;4',
+          'test#foo test'          => 'test#foo test',
+          'test.#joo bar'          => 'test.#joo bar',
+          'test #foodar test'      => "test #{tag_link('foodar')} test",
+          'test #foofar<br> test'  => "test #{tag_link('foofar')}&lt;br&gt; test",
+          'test #gooo@oo test'     => "test #{tag_link('gooo')}@oo test",
+          'test #foo-test test'    => "test #{tag_link('foo-test')} test",
+          'test #hoo'              => "test #{tag_link('hoo')}",
+          'test #two_word tags'    => "test #{tag_link('two_word')} tags",
+          'test #three_word_tags'  => "test #{tag_link('three_word_tags')}",
+          '#terminal_underscore_'  => tag_link('terminal_underscore_'),
+          '#terminalunderscore_'   => tag_link('terminalunderscore_'),
+          '#_initialunderscore'    => tag_link('_initialunderscore'),
+          '#_initial_underscore'   => tag_link('_initial_underscore'),
+          '#terminalhyphen-'       => tag_link('terminalhyphen-'),
+          '#terminal-hyphen-'      => tag_link('terminal-hyphen-'),
+          '#terminalhyphen- tag'   => "#{tag_link('terminalhyphen-')} tag",
+          '#-initialhyphen'        => tag_link('-initialhyphen'),
+          '#-initialhyphen tag'    => "#{tag_link('-initialhyphen')} tag",
+          '#-initial-hyphen'       => tag_link('-initial-hyphen'),
+        }
 
-      expected.each do |input,output|
-        Diaspora::Taggable.format_tags(input).should == output
+        expected.each do |input,output|
+          Diaspora::Taggable.format_tags(input).should == output
+        end
       end
     end
   end
